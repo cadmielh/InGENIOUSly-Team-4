@@ -1,0 +1,26 @@
+Managementul de Issue:
+======================
+
+Toate schimbarile de pe GIT trebuie facute pentru un anumit Issue.
+
+Go to issues tab --> New Issue
+Fiecare Issue v-a avea un sinopsis(Title) de forma:
+[Project_Name]: type_of_content: Short Description of modification
+ex: [Ingeniously]: CODE: UART communication
+
+cand este creat un issue nou, va primi un ID de forma "#id"
+
+acest #id trebuie referentiat la orice commit pentru issue-ul pentru care se face modificarea.
+Ex.
+[Ingeniously]: MISC: Repository Setup
+ID = #1
+la actiunea de commit a obiectului: "Software Architecture.vsd"
+la descriere se adauga ID-ul de issue "#1"
+iar acesasta versiune va fi vizibila pe issue(la fel ca un task.)
+
+
+din partea dreapta se assigneaza un user care sa faca modificari pe issue
+
+tot din partea dreapta se poate alege release-ul(Milestone-ul pentru care s-a creeat issue)
+
+de asemenea de la sectiunea Label se poate alege (bug - SWAR, Enhancement - SWCN, etc.)
