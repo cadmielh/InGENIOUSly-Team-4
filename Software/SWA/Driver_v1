@@ -1,0 +1,30 @@
+#define F_CPU 20000000ul
+#include<avr/io.h>
+#include<util/delay.h>
+#include<avr/delay.h>
+void pwm()
+{
+    // initialize TCCR0 as per requirement, say as follows
+    TCCR1A |= (1<<WGM00)|(1<<COM0A1)|(1<<WGM01)|(1<<CS00);
+	//PWM PIN
+    DDRB|= (1<<PB3);
+}
+int main(void)
+{
+	uint8_t speed;
+	pwm();
+	DDRC = 0x0F;			// initialize port C
+	while(1)
+	{
+	// Forward
+	for (speed=0;speed<255;speed++)
+		OCR0A=speed;
+	PORTC = 0b00000101;		
+	_delay_ms(1000);		// wait
+	for (speed=255;speed>=0;speed--)
+		OCR0A=speed;
+	// Backward
+	PORTC = 0b00001010;		
+	_delay_ms(1000);		// wait
+	}
+}
