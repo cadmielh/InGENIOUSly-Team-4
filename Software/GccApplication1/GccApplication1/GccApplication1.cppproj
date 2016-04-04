@@ -169,7 +169,19 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="main.cpp">
+    <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="sensors.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="sensors.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="UART_communication.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="UART_communication.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
