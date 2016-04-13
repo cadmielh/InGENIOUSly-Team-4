@@ -7,33 +7,17 @@
 
 #include "sensors.h"
 
-
+uint16_t adc_value;            //Variable used to store the value read from the ADC
+volatile uint8_t adc_high, adc_low;
+uint16_t data_sensor;
+uint16_t v[50];
+uint32_t total;
 
 
 void ADC_init()
 {
-	//ADMUX |= 1<<ADLAR;
 	ADCSRA |= ((1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0)); // prescaler of 128, 20M/128 = 156250 Hz
-	//ADMUX |= 1<<REFS0;       //Voltage reference from AVCC (5v)
 	ADCSRA |= 1<<ADEN;		  //Turn on ADC
-	//ADCSRA |= 1<<ADSC;	//to start the first conversion
-	
-	
-	/*ADCSRA |= ((1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0)); // prescaler of 128, 20M/128 = 156250 Hz
-	ADMUX |= 1<<ADLAR;
-	ADMUX |= (1<<REFS0);       //Voltage reference from AVCC (5v)
-	ADCSRA |= 1<<ADIE;	//interrupt enable
-	ADCSRA |= 1<<ADEN;		  //Turn on ADC
-	sei();
-	ADCSRA |= 1<<ADSC;	//to start the first conversion
-	*/
-	
-	
-	/*ADMUX |= (1<<REFS0);       //Voltage reference from AVCC (5v)
-	 
-	ADCSRA |= (1<<ADATE);                //Signal source, in this case is the free-running
-	ADCSRB &= ~((1<<ADTS2)|(1<<ADTS1)|(1<<ADTS0));    //ADC in free-running mode
-	*/
 }
 
 
@@ -56,11 +40,3 @@ uint16_t ADC_read(uint8_t channel)
 	return adc_value;
 }
 
-/*ISR(ADC_vect)
-{
-	char adcResult[4];
-	itoa(ADCH, adcResult,10);
-	USART_Transmit(adcResult);
-	USART_Transmit("      ");
-	ADCSRA |= 1<<ADSC;
-}*/

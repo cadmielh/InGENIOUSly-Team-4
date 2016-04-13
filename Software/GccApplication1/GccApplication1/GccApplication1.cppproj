@@ -172,10 +172,22 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="motors.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="motors.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="sensors.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="sensors.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="timers.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="timers.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="UART_communication.c">

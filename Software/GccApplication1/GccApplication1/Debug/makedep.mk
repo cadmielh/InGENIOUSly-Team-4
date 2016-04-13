@@ -4,7 +4,11 @@
 
 main.c
 
+motors.c
+
 sensors.c
+
+timers.c
 
 UART_communication.c
 

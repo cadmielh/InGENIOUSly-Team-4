@@ -38,7 +38,9 @@ SUBDIRS :=
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../main.c \
+../motors.c \
 ../sensors.c \
+../timers.c \
 ../UART_communication.c
 
 
@@ -50,22 +52,30 @@ ASM_SRCS +=
 
 OBJS +=  \
 main.o \
+motors.o \
 sensors.o \
+timers.o \
 UART_communication.o
 
 OBJS_AS_ARGS +=  \
 main.o \
+motors.o \
 sensors.o \
+timers.o \
 UART_communication.o
 
 C_DEPS +=  \
 main.d \
+motors.d \
 sensors.d \
+timers.d \
 UART_communication.d
 
 C_DEPS_AS_ARGS +=  \
 main.d \
+motors.d \
 sensors.d \
+timers.d \
 UART_communication.d
 
 OUTPUT_FILE_PATH +=GccApplication1.elf
@@ -82,6 +92,10 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
+
+
 
 
 
