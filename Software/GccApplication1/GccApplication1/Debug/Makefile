@@ -37,7 +37,9 @@ SUBDIRS :=
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
-../main.cpp
+../main.c \
+../sensors.c \
+../UART_communication.c
 
 
 PREPROCESSING_SRCS += 
@@ -47,16 +49,24 @@ ASM_SRCS +=
 
 
 OBJS +=  \
-main.o
+main.o \
+sensors.o \
+UART_communication.o
 
 OBJS_AS_ARGS +=  \
-main.o
+main.o \
+sensors.o \
+UART_communication.o
 
 C_DEPS +=  \
-main.d
+main.d \
+sensors.d \
+UART_communication.d
 
 C_DEPS_AS_ARGS +=  \
-main.d
+main.d \
+sensors.d \
+UART_communication.d
 
 OUTPUT_FILE_PATH +=GccApplication1.elf
 
@@ -75,10 +85,14 @@ LINKER_SCRIPT_DEP+=
 
 
 
-./%.o: .././%.cpp
+
+
+
+
+./%.o: .././%.c
 	@echo Building file: $<
 	@echo Invoking: AVR8/GNU C Compiler : 4.9.2
-	$(QUOTE)D:\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-g++.exe$(QUOTE) -funsigned-char -funsigned-bitfields -DDEBUG  -I"D:\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.0.98\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega1284 -B "D:\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.0.98\gcc\dev\atmega1284" -c -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)D:\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"D:\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.0.98\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega1284 -B "D:\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.0.98\gcc\dev\atmega1284" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 

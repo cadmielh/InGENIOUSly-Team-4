@@ -5,9 +5,9 @@
  *  Author: user
  */ 
 
-#include "communication.h"
+#include "UART_communication.h"
 
-
+unsigned int my_ubrr = MYUBRR;
 
 void USART_Init()
 {

@@ -10,13 +10,14 @@
  
  
  #define MYUBRR 130
- 
+ //#define F_CPU 20000000ul	// 20 MHz oscillator.
+ #define BAUD 9600
  
  #include <avr/io.h>
  
  
  
- unsigned int my_ubrr = MYUBRR;
+ 
  
  void USART_Init();
  void USART_Transmit( unsigned char data );
