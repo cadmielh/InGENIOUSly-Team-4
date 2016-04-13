@@ -8,10 +8,16 @@
 #include "motors.h"
 #include "sensors.h"
 #include "UART_communication.h"
+#include "timers.h"
 
 
-unsigned char speed, direction, time;
-int verify,sec;
+unsigned char speed;
+unsigned char direction;
+unsigned char time;
+int verify;
+int start_once=1;
+unsigned int sec;
+uint8_t tm=1;
 
 
 void PWM1_init()
@@ -81,44 +87,63 @@ unsigned int receive_parameters()
 }
 
 
-void Motor_1(unsigned char direction_1, unsigned char speed_1, unsigned char time_1)
+void Motor_1(unsigned char direction_1, unsigned char speed_1,unsigned char time_1)
 {
 	
-	if(direction_1=='F' || direction_1=='f')
+	sec=0;
+	
+	if(start_once==1)
 	{
-		//go forward
-		PORTD|=(1<<PORTD5)|(1<<PORTD6);
-		_delay_ms(1);
-		PORTD|=(1<<PORTD5);
-		PORTD&=~(1<<PORTD6);
-		for(uint8_t i=32;i<speed;i++)
+		if(direction_1=='F' || direction_1=='f')
 		{
-			OCR0A=i;
-			_delay_ms(5);
+			//go forward
+			PORTD|=(1<<PORTD5)|(1<<PORTD6);
+			_delay_ms(1);
+			PORTD|=(1<<PORTD5);
+			PORTD&=~(1<<PORTD6);
+			start_once=0;
+			sec=s_time.s;
+			for(uint8_t i=32;i<speed_1;i++)
+			{
+				OCR0A=i;
+				_delay_ms(5);
+			}
+		
 		}
-		
-		
-	}
-	if(direction_1=='B' || direction_1=='b')
-	{
-		//go backward
-		PORTD|=(1<<PORTD5)|(1<<PORTD6);
-		_delay_ms(1);
-		PORTD|=(1<<PORTD6);
-		PORTD&=~(1<<PORTD5);
-		for(uint8_t i=32;i<speed;i++)
+		if(direction_1=='B' || direction_1=='b')
 		{
-			OCR0A=i;
-			_delay_ms(30);
+			//go backward
+			PORTD|=(1<<PORTD5)|(1<<PORTD6);
+			_delay_ms(1);
+			PORTD|=(1<<PORTD6);
+			PORTD&=~(1<<PORTD5);
+			start_once=0;
+			sec=s_time.s;
+			for(uint8_t i=32;i<speed_1;i++)
+			{
+				OCR0A=i;
+				_delay_ms(5);
+			}
 		}
-		
-		
 	}
+	
+	
+		if ((s_time.s - sec)>=time_1 && tm)
+		{
+			for(uint8_t i=speed_1;i>0;i--)
+			{
+				OCR0A=i;	
+				_delay_ms(5);
+			}
+			tm=0;
+		}	
+	
+	
 	
 }
 
 
-void Motor_2(unsigned char direction_2, unsigned char speed_2, unsigned char time_2)
+void Motor_2(unsigned char direction_2, unsigned char speed_2,unsigned char time_2)
 {
 	
 	if(direction_2=='F' || direction_2=='f')
@@ -128,7 +153,7 @@ void Motor_2(unsigned char direction_2, unsigned char speed_2, unsigned char tim
 		_delay_ms(1);
 		PORTD|=(1<<PORTD3);
 		PORTD&=~(1<<PORTD4);
-		for(uint8_t i=32;i<speed;i++)
+		for(uint8_t i=32;i<speed_2;i++)
 		{
 			OCR1A=i;
 			_delay_ms(5);
@@ -143,7 +168,7 @@ void Motor_2(unsigned char direction_2, unsigned char speed_2, unsigned char tim
 		_delay_ms(1);
 		PORTD|=(1<<PORTD4);
 		PORTD&=~(1<<PORTD3);
-		for(uint8_t i=32;i<speed;i++)
+		for(uint8_t i=32;i<speed_2;i++)
 		{
 			OCR1A=i;
 			_delay_ms(5);

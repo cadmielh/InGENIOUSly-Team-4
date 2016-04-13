@@ -12,7 +12,7 @@
 
 int main (void)
 { 
-	int check=1,sec=0,tm=1;
+	
 	uint8_t speed;
 	
 	USART_Init();
@@ -22,7 +22,7 @@ int main (void)
 	timer3_init();
 	
 	
-	speed=160;
+	speed=130;
 	
 	
 	while (1)  // main loop										
@@ -45,24 +45,10 @@ int main (void)
 		*/
 		
 		
-		if(check==1)
-		{
-			Motor_1('b',speed,5);
-			//Motor_2('F',speed,5);
-			sec=sys_time.s;
-			check=0;
-		}
+			Motor_1('b',speed,8);
+			
 		
-		if ((sys_time.s - sec)>=5 && tm)
-		{
-			for(uint8_t i=speed;i>0;i--)
-			{
-				OCR0A=i;
-				
-				_delay_ms(5);
-			}
-			tm=0;
-		}
+		
 
 		
 		

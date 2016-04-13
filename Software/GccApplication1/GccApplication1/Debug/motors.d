@@ -17,7 +17,7 @@ motors.d motors.o: .././motors.c .././motors.h \
  .././sensors.h \
  d:\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  d:\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\4.9.2\include\stddef.h \
- .././UART_communication.h
+ .././UART_communication.h .././timers.h
 
 .././motors.h:
 
@@ -58,3 +58,5 @@ d:\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h:
 d:\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\4.9.2\include\stddef.h:
 
 .././UART_communication.h:
+
+.././timers.h:

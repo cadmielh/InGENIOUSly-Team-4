@@ -15,6 +15,7 @@
 
 
 
+
 void timer3_init()
 {
 	// clear on compare match
@@ -39,25 +40,24 @@ void timer3_init()
 ISR(TIMER3_COMPA_vect)
 {
 	
-	
 	// initialize counter
 	TCNT3H = 0;
 	TCNT3L = 0;
 	// keep a track of number of overflows
 	ovfl++;
 	if(ovfl>=40)
-	{	sys_time.ms++;
-		if (sys_time.ms>=1000)
+	{	s_time.ms++;
+		if (s_time.ms>=1000)
 		{
-			sys_time.s++;
-			sys_time.ms=0;
-			if(sys_time.s>=60)
+			s_time.s++;
+			s_time.ms=0;
+			if(s_time.s>=60)
 			{
-				sys_time.m++;
-				sys_time.s=0;
+				s_time.m++;
+				s_time.s=0;
 				
-				if(sys_time.m>=60)
-				sys_time.m=0;
+				if(s_time.m>=60)
+				s_time.m=0;
 			}
 			
 		}

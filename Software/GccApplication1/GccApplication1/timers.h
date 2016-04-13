@@ -16,12 +16,13 @@
  #include <util/delay.h>
  #include <avr/interrupt.h>
  
-  struct{
+typedef struct{
 	  unsigned int ms;
 	  unsigned int s;
 	  unsigned int m;
   }sys_time;
 
+sys_time s_time;
  
  void timer3_init();
  
