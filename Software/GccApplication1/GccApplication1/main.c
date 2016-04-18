@@ -1,6 +1,5 @@
 
 
-#define F_CPU 20000000ul	// 20 MHz oscillator.
 
 #include "sensors.h" 
 #include "UART_communication.h"
@@ -10,19 +9,23 @@
 
 
 
+
+
 int main (void)
 { 
 	
 	uint8_t speed;
+	speed=200;
 	
 	USART_Init();
 	ADC_init();
 	PWM1_init();
 	PWM2_init();
 	timer3_init();
+	encoders_init();
+	sei(); //enable interrupts
 	
 	
-	speed=130;
 	
 	
 	while (1)  // main loop										
@@ -43,15 +46,16 @@ int main (void)
 		USART_Transmit(' ');
 		_delay_ms(1000);
 		*/
+		if(rotations_left>=3)
+		{
+		Motor_2('b',speed,5);
+		_delay_ms(1000);
+		}
 		
-		
-			Motor_1('b',speed,8);
-			
-		
+			//Motor_1('b',speed,5);
+			//Motor_2('b',speed,5);
 		
 
-		
-		
 	} 
 return 0;
 }

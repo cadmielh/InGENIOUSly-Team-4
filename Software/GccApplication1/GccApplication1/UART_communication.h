@@ -10,7 +10,6 @@
  
  
  #define MYUBRR 130
- //#define F_CPU 20000000ul	// 20 MHz oscillator.
  #define BAUD 9600
  
  #include <avr/io.h>

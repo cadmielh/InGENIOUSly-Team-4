@@ -8,7 +8,7 @@
 #ifndef MOTORS_H_
 #define MOTORS_H_
 
-#define F_CPU 20000000ul	// 20 MHz oscillator.
+#define F_CPU 12000000ul	// 12 MHz oscillator.
 
 #include <avr/io.h>
 #include <util/delay.h>

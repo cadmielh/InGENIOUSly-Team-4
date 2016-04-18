@@ -32,10 +32,12 @@ void timer3_init()
 	TCNT3H = 0;
 	TCNT3L = 0;
 	
-	sei();
+	
 	
 	TIMSK3 |= (1<<OCIE3A) | (1<<TOIE3);
 }
+
+
 
 ISR(TIMER3_COMPA_vect)
 {
