@@ -10,6 +10,7 @@
 #include <avr/io.h>
 #include <stdlib.h>
 #include <avr/interrupt.h>
+#include <math.h>
 
 
 volatile uint8_t grey_right;

@@ -12,35 +12,34 @@ volatile uint8_t adc_high, adc_low;
 uint16_t data_sensor;
 uint16_t v[50];
 uint32_t total;
-
+uint8_t tmp = 0;
 
 uint8_t val;
 
 
 void ADC_init()
 {
-	ADCSRA |= ((1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0)); // prescaler of 128, 20M/128 = 156250 Hz
+	DDRA &= ~(1<<PINA1);
 	ADCSRA |= 1<<ADEN;		  //Turn on ADC
 }
 
 
 uint16_t ADC_read(uint8_t channel)
 {
-	adc_low=0;
-	adc_high=0;
-	//channel=channel & 0b00000111;		//Select ADC Channel, channel must be 0-7
-
+	float distance;
+	channel=channel & 0b00000111;		//Select ADC Channel, channel must be 0-7
+	ADMUX = 0;
+	//ADMUX |= (1<<MUX0);        //Clear the older channel that was read
+	ADMUX|= channel;		//Defines the new ADC channel to be read
 	
-	//ADMUX &= 0xb00000000;        //Clear the older channel that was read
-	//ADMUX|= channel;		//Defines the new ADC channel to be read
+	ADCSRA |=(1<<ADSC);	// enable ADC and start single conversion
 	
-	ADCSRA |= (1<<ADSC);	// start single conversion
 	
 	while(ADCSRA & (1<<ADSC));	// wait for conversion to complete
-	
-	adc_value=ADC;
-	
-	return adc_value;
+	//volts=ADC*0.0048828125;
+	//distance = 65 * pow(volts, -1.10);
+	//distance = (2914. / (ADC + 5))-1;
+	return ADC;
 }
 
 

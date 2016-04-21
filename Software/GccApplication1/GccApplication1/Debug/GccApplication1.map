@@ -22,13 +22,14 @@ val                 0x1               sensors.o
 data_sensor         0x2               sensors.o
 rotations_right     0x1               main.o
 grey_left           0x1               main.o
-v                   0x64              sensors.o
+v                   0x78              main.o
 time                0x1               motors.o
 adc_low             0x1               sensors.o
 speed               0x1               motors.o
 s_time              0x6               main.o
 rotations_left      0x1               main.o
 total               0x4               sensors.o
+primit              0x1               main.o
 time_ms             0x2               timers.o
 
 Discarded input sections
@@ -44,15 +45,19 @@ Discarded input sections
  .text.receive_parameters
                 0x00000000       0x78 motors.o
  .text.Motor_1  0x00000000      0x1a8 motors.o
+ .text.Motor_2  0x00000000      0x1a8 motors.o
+ .data.tm2      0x00000000        0x1 motors.o
  .data.tm1      0x00000000        0x1 motors.o
+ .data.start_once2
+                0x00000000        0x2 motors.o
  .data.start_once1
                 0x00000000        0x2 motors.o
+ COMMON         0x00000000        0x9 motors.o
  .text          0x00000000        0x0 sensors.o
  .data          0x00000000        0x0 sensors.o
  .bss           0x00000000        0x0 sensors.o
- .text.ADC_read
-                0x00000000       0x2a sensors.o
- COMMON         0x00000000       0x6f sensors.o
+ .bss.tmp       0x00000000        0x1 sensors.o
+ COMMON         0x00000000        0xb sensors.o
  .text          0x00000000        0x0 timers.o
  .data          0x00000000        0x0 timers.o
  .bss           0x00000000        0x0 timers.o
@@ -235,7 +240,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x466
+.text           0x00000000      0x2de
  *(.vectors)
  .vectors       0x00000000       0x8c D:/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.98/gcc/dev/atmega1284/avr51/crtatmega1284.o
                 0x00000000                __vector_default
@@ -326,42 +331,43 @@ END GROUP
                 0x000000c6                __vector_20
                 0x000000c8                . = ALIGN (0x2)
  *(.text.*)
- .text.main     0x000000c8       0x32 main.o
+ .text.main     0x000000c8       0x36 main.o
                 0x000000c8                main
  .text.PWM1_init
-                0x000000fa        0xe motors.o
-                0x000000fa                PWM1_init
+                0x000000fe        0xe motors.o
+                0x000000fe                PWM1_init
  .text.PWM2_init
-                0x00000108        0xe motors.o
-                0x00000108                PWM2_init
- .text.Motor_2  0x00000116      0x1a8 motors.o
-                0x00000116                Motor_2
+                0x0000010c        0xe motors.o
+                0x0000010c                PWM2_init
  .text.ADC_init
-                0x000002be       0x12 sensors.o
-                0x000002be                ADC_init
+                0x0000011a        0xe sensors.o
+                0x0000011a                ADC_init
+ .text.ADC_read
+                0x00000128       0x20 sensors.o
+                0x00000128                ADC_read
  .text.encoders_init
-                0x000002d0       0x2c sensors.o
-                0x000002d0                encoders_init
+                0x00000148       0x2c sensors.o
+                0x00000148                encoders_init
  .text.__vector_1
-                0x000002fc       0x38 sensors.o
-                0x000002fc                __vector_1
+                0x00000174       0x38 sensors.o
+                0x00000174                __vector_1
  .text.__vector_2
-                0x00000334       0x38 sensors.o
-                0x00000334                __vector_2
+                0x000001ac       0x38 sensors.o
+                0x000001ac                __vector_2
  .text.timer3_init
-                0x0000036c       0x3a timers.o
-                0x0000036c                timer3_init
+                0x000001e4       0x3a timers.o
+                0x000001e4                timer3_init
  .text.__vector_32
-                0x000003a6       0x9e timers.o
-                0x000003a6                __vector_32
+                0x0000021e       0x9e timers.o
+                0x0000021e                __vector_32
  .text.USART_Init
-                0x00000444       0x1e UART_communication.o
-                0x00000444                USART_Init
-                0x00000462                . = ALIGN (0x2)
+                0x000002bc       0x1e UART_communication.o
+                0x000002bc                USART_Init
+                0x000002da                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000462        0x0 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr51\libgcc.a(_exit.o)
-                0x00000462                _exit
-                0x00000462                exit
+ .fini9         0x000002da        0x0 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr51\libgcc.a(_exit.o)
+                0x000002da                _exit
+                0x000002da                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -380,60 +386,49 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000462        0x4 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr51\libgcc.a(_exit.o)
+ .fini0         0x000002da        0x4 d:/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr51\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000466                _etext = .
+                0x000002de                _etext = .
 
-.data           0x00800100        0x6 load address 0x00000466
+.data           0x00800100        0x2 load address 0x000002de
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
- .data.tm2      0x00800100        0x1 motors.o
-                0x00800100                tm2
- .data.start_once2
-                0x00800101        0x2 motors.o
-                0x00800101                start_once2
- .data.my_ubrr  0x00800103        0x2 UART_communication.o
-                0x00800103                my_ubrr
+ .data.my_ubrr  0x00800100        0x2 UART_communication.o
+                0x00800100                my_ubrr
  *(.rodata)
  *(.rodata*)
  *(.gnu.linkonce.d*)
-                0x00800106                . = ALIGN (0x2)
- *fill*         0x00800105        0x1 
-                0x00800106                _edata = .
-                0x00800106                PROVIDE (__data_end, .)
+                0x00800102                . = ALIGN (0x2)
+                0x00800102                _edata = .
+                0x00800102                PROVIDE (__data_end, .)
 
-.bss            0x00800106       0x17
-                0x00800106                PROVIDE (__bss_start, .)
+.bss            0x00800102       0x87
+                0x00800102                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  *(COMMON)
- COMMON         0x00800106        0xa main.o
-                0x00800106                grey_right
-                0x00800107                rotations_right
-                0x00800108                grey_left
-                0x00800109                s_time
-                0x0080010f                rotations_left
- COMMON         0x00800110        0x9 motors.o
-                0x00800110                sec2
-                0x00800112                sec1
-                0x00800114                direction
-                0x00800115                verify
-                0x00800117                time
-                0x00800118                speed
- COMMON         0x00800119        0x4 timers.o
-                0x00800119                ovfl
-                0x0080011b                time_ms
-                0x0080011d                PROVIDE (__bss_end, .)
-                0x00000466                __data_load_start = LOADADDR (.data)
-                0x0000046c                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x00800102       0x83 main.o
+                0x00800102                grey_right
+                0x00800103                rotations_right
+                0x00800104                grey_left
+                0x00800105                v
+                0x0080017d                s_time
+                0x00800183                rotations_left
+                0x00800184                primit
+ COMMON         0x00800185        0x4 timers.o
+                0x00800185                ovfl
+                0x00800187                time_ms
+                0x00800189                PROVIDE (__bss_end, .)
+                0x000002de                __data_load_start = LOADADDR (.data)
+                0x000002e0                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080011d        0x0
-                0x0080011d                PROVIDE (__noinit_start, .)
+.noinit         0x00800189        0x0
+                0x00800189                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x0080011d                PROVIDE (__noinit_end, .)
-                0x0080011d                _end = .
-                0x0080011d                PROVIDE (__heap_start, .)
+                0x00800189                PROVIDE (__noinit_end, .)
+                0x00800189                _end = .
+                0x00800189                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
@@ -517,29 +512,29 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0xbfa
+.debug_info     0x00000000      0xbe9
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000      0x271 main.o
- .debug_info    0x00000271      0x5b3 motors.o
- .debug_info    0x00000824      0x1e9 sensors.o
- .debug_info    0x00000a0d      0x117 timers.o
- .debug_info    0x00000b24       0xd6 UART_communication.o
+ .debug_info    0x00000000      0x23c main.o
+ .debug_info    0x0000023c      0x5b3 motors.o
+ .debug_info    0x000007ef      0x20d sensors.o
+ .debug_info    0x000009fc      0x117 timers.o
+ .debug_info    0x00000b13       0xd6 UART_communication.o
 
-.debug_abbrev   0x00000000      0x522
+.debug_abbrev   0x00000000      0x4ff
  *(.debug_abbrev)
- .debug_abbrev  0x00000000      0x16a main.o
- .debug_abbrev  0x0000016a      0x1ab motors.o
- .debug_abbrev  0x00000315       0xcf sensors.o
- .debug_abbrev  0x000003e4       0x9b timers.o
- .debug_abbrev  0x0000047f       0xa3 UART_communication.o
+ .debug_abbrev  0x00000000      0x13a main.o
+ .debug_abbrev  0x0000013a      0x1ab motors.o
+ .debug_abbrev  0x000002e5       0xdc sensors.o
+ .debug_abbrev  0x000003c1       0x9b timers.o
+ .debug_abbrev  0x0000045c       0xa3 UART_communication.o
 
-.debug_line     0x00000000      0xa34
+.debug_line     0x00000000      0x9e1
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x00000000      0x155 main.o
- .debug_line    0x00000155      0x52e motors.o
- .debug_line    0x00000683      0x17f sensors.o
- .debug_line    0x00000802      0x12f timers.o
- .debug_line    0x00000931      0x103 UART_communication.o
+ .debug_line    0x00000000      0x108 main.o
+ .debug_line    0x00000108      0x52e motors.o
+ .debug_line    0x00000636      0x179 sensors.o
+ .debug_line    0x000007af      0x12f timers.o
+ .debug_line    0x000008de      0x103 UART_communication.o
 
 .debug_frame    0x00000000      0x1a8
  *(.debug_frame)
@@ -549,24 +544,25 @@ END GROUP
  .debug_frame   0x0000010c       0x58 timers.o
  .debug_frame   0x00000164       0x44 UART_communication.o
 
-.debug_str      0x00000000      0x3a5
+.debug_str      0x00000000      0x3bb
  *(.debug_str)
- .debug_str     0x00000000      0x233 main.o
-                                0x26e (size before relaxing)
- .debug_str     0x00000233       0xa0 motors.o
+ .debug_str     0x00000000      0x202 main.o
+                                0x23d (size before relaxing)
+ .debug_str     0x00000202       0xf3 motors.o
                                 0x2d4 (size before relaxing)
- .debug_str     0x000002d3       0x75 sensors.o
-                                0x247 (size before relaxing)
- .debug_str     0x00000348       0x27 timers.o
+ .debug_str     0x000002f5       0x69 sensors.o
+                                0x256 (size before relaxing)
+ .debug_str     0x0000035e       0x27 timers.o
                                 0x1ca (size before relaxing)
- .debug_str     0x0000036f       0x36 UART_communication.o
+ .debug_str     0x00000385       0x36 UART_communication.o
                                 0x1cd (size before relaxing)
 
-.debug_loc      0x00000000      0x8ad
+.debug_loc      0x00000000      0x8d2
  *(.debug_loc)
- .debug_loc     0x00000000      0x7a4 motors.o
- .debug_loc     0x000007a4       0x99 sensors.o
- .debug_loc     0x0000083d       0x70 timers.o
+ .debug_loc     0x00000000       0x14 main.o
+ .debug_loc     0x00000014      0x7a4 motors.o
+ .debug_loc     0x000007b8       0xaa sensors.o
+ .debug_loc     0x00000862       0x70 timers.o
 
 .debug_macinfo
  *(.debug_macinfo)

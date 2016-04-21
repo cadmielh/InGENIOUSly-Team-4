@@ -9,6 +9,8 @@
 
 
 
+uint16_t v[60];
+unsigned char primit;
 
 
 int main (void)
@@ -16,6 +18,7 @@ int main (void)
 	
 	uint8_t speed;
 	speed=200;
+	primit='a';
 	
 	USART_Init();
 	ADC_init();
@@ -26,31 +29,25 @@ int main (void)
 	sei(); //enable interrupts
 	
 	
-	
-	
 	while (1)  // main loop										
 	{
 		//total=0;
 		
-		/*data_sensor=0;
-		for(int i=0;i<50;i++)
+	
+		for(int i=0;i<60;i++)
 			{
-				v[i]=ADC_read(0);
-				//total = total + ADC_read(0);
+				v[i]=ADC_read(1);
 			}
-			
-		//total=(uint32_t)total/10;
-		data_sensor=v[25];
+	
 		
-		USART_Transmit(data_sensor);
-		USART_Transmit(' ');
-		_delay_ms(1000);
-		*/
-		if(rotations_left>=3)
+		
+		
+		
+		/*if(rotations_left>=3)
 		{
 		Motor_2('b',speed,5);
 		_delay_ms(1000);
-		}
+		}*/
 		
 			//Motor_1('b',speed,5);
 			//Motor_2('b',speed,5);
