@@ -19,7 +19,7 @@ volatile uint8_t grey_left;
 volatile uint8_t rotations_left;
 
 void ADC_init(void);            //Function to initialize/configure the ADC
-uint16_t ADC_read(uint8_t channel);    //Function to read an arbitrary analogic channel/pin		
+float ADC_read(uint8_t channel);    //Function to read an arbitrary analogic channel/pin		
 void encoders_init(void);
 
 

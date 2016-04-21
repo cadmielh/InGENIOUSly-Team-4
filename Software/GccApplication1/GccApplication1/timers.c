@@ -11,6 +11,10 @@
 
  // global variable to count the number of overflows
  volatile uint16_t ovfl,time_ms;
+ uint8_t chan;
+ float sum[3];
+ float a[3][36];
+ 
 
 
 
@@ -37,6 +41,23 @@ void timer3_init()
 	TIMSK3 |= (1<<OCIE3A) | (1<<TOIE3);
 }
 
+
+float ADC_read(uint8_t channel)
+{
+	float distance;
+	channel=channel & 0b00000111;		//Select ADC Channel, channel must be 0-7
+	ADMUX = 0;
+	//ADMUX |= (1<<MUX0);        //Clear the older channel that was read
+	ADMUX|= channel;		//Defines the new ADC channel to be read
+	ADCSRA |=(1<<ADSC);	// enable ADC and start single conversion
+	
+	
+	while(ADCSRA & (1<<ADSC));	// wait for conversion to complete
+	//volts=ADC*0.0048828125;
+	//distance = 65 * pow(volts, -1.10);
+	distance = (2914. / (ADC + 4.98)) -1;
+	return distance;
+}
 
 
 ISR(TIMER3_COMPA_vect)
@@ -66,5 +87,14 @@ ISR(TIMER3_COMPA_vect)
 		ovfl=0;
 	}
 	
+	
+	for(chan=0;chan<=3)
+		for(int i=0;i<=35;i++)
+			{	a[chan][i]=ADC_read(chan);
+				if(i>=2)
+					sum[chan]=sum[chan]+a[chan][i];
+				a[chan][i]=0;
+			}
+	sum[chan]=sum[chan]/34;
+	
 }
-

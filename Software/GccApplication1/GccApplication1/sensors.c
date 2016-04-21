@@ -24,7 +24,8 @@ void ADC_init()
 }
 
 
-uint16_t ADC_read(uint8_t channel)
+/*
+float ADC_read(uint8_t channel)
 {
 	float distance;
 	channel=channel & 0b00000111;		//Select ADC Channel, channel must be 0-7
@@ -38,9 +39,9 @@ uint16_t ADC_read(uint8_t channel)
 	while(ADCSRA & (1<<ADSC));	// wait for conversion to complete
 	//volts=ADC*0.0048828125;
 	//distance = 65 * pow(volts, -1.10);
-	//distance = (2914. / (ADC + 5))-1;
-	return ADC;
-}
+	distance = (2914. / (ADC + 4.98)) -1;
+	return distance;
+}*/
 
 
 

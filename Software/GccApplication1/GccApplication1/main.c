@@ -9,8 +9,8 @@
 
 
 
-uint16_t v[60];
-unsigned char primit;
+float v[60];
+ char primit;
 
 
 int main (void)
@@ -18,7 +18,7 @@ int main (void)
 	
 	uint8_t speed;
 	speed=200;
-	primit='a';
+
 	
 	USART_Init();
 	ADC_init();
@@ -33,12 +33,15 @@ int main (void)
 	{
 		//total=0;
 		
-	
+
 		for(int i=0;i<60;i++)
 			{
-				v[i]=ADC_read(1);
+				v[i]=ADC_read(0);
 			}
+		
 	
+	
+				
 		
 		
 		
