@@ -10,11 +10,14 @@
 uint16_t adc_value;            //Variable used to store the value read from the ADC
 volatile uint8_t adc_high, adc_low;
 uint16_t data_sensor;
-uint16_t v[50];
+uint16_t v[50],chan0[10],chan1[10],chan2[10],chan3[10];
 uint32_t total;
 uint8_t tmp = 0;
-
+uint8_t contor=0;
 uint8_t val;
+uint32_t sum0=0,sum1=0,sum2=0,sum3=0;
+float distance;
+
 
 
 void ADC_init()
@@ -24,10 +27,10 @@ void ADC_init()
 }
 
 
-/*
+
 float ADC_read(uint8_t channel)
 {
-	float distance;
+	
 	channel=channel & 0b00000111;		//Select ADC Channel, channel must be 0-7
 	ADMUX = 0;
 	//ADMUX |= (1<<MUX0);        //Clear the older channel that was read
@@ -39,10 +42,63 @@ float ADC_read(uint8_t channel)
 	while(ADCSRA & (1<<ADSC));	// wait for conversion to complete
 	//volts=ADC*0.0048828125;
 	//distance = 65 * pow(volts, -1.10);
-	distance = (2914. / (ADC + 4.98)) -1;
-	return distance;
-}*/
+	//distance = (2914. / (ADC + 4.98)) -1;
+	return ADC;
+}
 
+
+void ADC_update_values()
+{		//taking first value from sensor which is inaccurate
+		ADC_read(0);
+		ADC_read(1);
+		ADC_read(2);
+		ADC_read(3);
+		
+		chan0[contor]=ADC_read(0);
+		chan1[contor]=ADC_read(1);
+		chan2[contor]=ADC_read(2);
+		chan3[contor]=ADC_read(3);
+		
+		sum0 += chan0[contor];
+		chan0[contor]=0;
+		sum1 += chan1[contor];
+		chan1[contor]=0;
+		sum2 += chan2[contor];
+		chan2[contor]=0;
+		sum3 += chan3[contor];
+		chan3[contor]=0;
+		
+	contor++;
+	if(contor==10)
+			{
+				contor=0;
+				sum0=0;
+				sum1=0;
+				sum2=0;
+				sum3=0;
+			}
+}
+
+
+float get_ADC_average(uint8_t channel)
+{
+	switch(channel)
+	{
+		case 0:  data_sensor = sum0 /10;
+				 distance = (2914. / (data_sensor + 4.98)) -1;	//in cm formula
+				 break;
+		case 1:  data_sensor = sum1 /10;
+				 distance = (2914. / (data_sensor + 4.98)) -1;	//in cm formula
+				 break;
+		case 2:  data_sensor = sum2 /10;
+				 distance = (2914. / (data_sensor + 4.98)) -1;	//in cm formula
+		         break;
+		case 3:  data_sensor = sum3 /10;
+		         distance = (2914. / (data_sensor + 4.98)) -1;	//in cm formula
+		         break;		 
+	}
+	return distance; //ADC average in cm
+}
 
 
 void encoders_init()

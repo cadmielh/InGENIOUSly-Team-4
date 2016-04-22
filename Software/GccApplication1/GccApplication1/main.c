@@ -9,7 +9,7 @@
 
 
 
-float v[60];
+float rezultat;
  char primit;
 
 
@@ -34,10 +34,7 @@ int main (void)
 		//total=0;
 		
 
-		for(int i=0;i<60;i++)
-			{
-				v[i]=ADC_read(0);
-			}
+		rezultat=get_ADC_average(0);
 		
 	
 	

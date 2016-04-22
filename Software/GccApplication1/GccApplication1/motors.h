@@ -24,6 +24,7 @@ void Motor_1(unsigned char direction_1, unsigned char speed_1,unsigned char time
 void Motor_2(unsigned char direction_2, unsigned char speed_2,unsigned char time_2);
 unsigned int receive_parameters();
 void timer3_init();
+void stop_motors();
 
 
 

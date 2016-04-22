@@ -21,6 +21,7 @@ unsigned int sec1;
 unsigned int sec2;
 uint8_t tm1=1;
 uint8_t tm2=1;
+uint8_t moving_forward,moving_backward;
 
 
 void PWM1_init()
@@ -87,7 +88,7 @@ unsigned int receive_parameters()
 	return OK;
 }
 
-
+/*
 void Motor_1(unsigned char direction_1, unsigned char speed_1,unsigned char time_1)
 {
 	
@@ -197,6 +198,54 @@ void Motor_2(unsigned char direction_2, unsigned char speed_2,unsigned char time
 	
 	
 }
+*/
+void motors_forward(uint8_t speed)
+{
+	PORTD&=~(1<<PORTD5);	//both motors phase are set to 0
+	PORTD&=~(1<<PORTD6);
+	
+	if(moving_forward==0)
+		for(uint8_t i=32;i<speed;i++)
+		{
+			moving_forward=1;
+			OCR0A=i;
+			OCR0B=i;
+			_delay_ms(5);
+		}
+		else if(moving_forward==1)
+		{
+			//here comes reglation
+			OCR0A=speed;
+			OCR0B=speed;
+		}
+}
 
 
+void motors_backward(uint8_t speed)
+{
+	PORTD|=(1<<PORTD5);	//both motors phase are set to 1
+	PORTD|=(1<<PORTD6);
+	
+	if(moving_backward==0)
+	for(uint8_t i=32;i<speed;i++)
+	{
+		moving_backward=1;
+		OCR0A=i;
+		OCR0B=i;
+		_delay_ms(5);
+	}
+	else if(moving_backward==1)
+	{
+		//here comes reglation
+		OCR0A=speed;
+		OCR0B=speed;
+	}
+}
 
+
+void stop_motors()
+{
+	OCR0A=0;
+	OCR0B=0;
+	moving_forward=0;
+}
