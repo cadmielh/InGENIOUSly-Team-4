@@ -16,6 +16,7 @@ uint8_t tmp = 0;
 uint8_t contor=0;
 uint8_t val;
 uint32_t sum0=0,sum1=0,sum2=0,sum3=0;
+
 float distance;
 
 
@@ -49,6 +50,7 @@ uint16_t ADC_read(uint8_t channel)
 
 void ADC_update_values()
 {		//taking first value from sensor which is inaccurate
+		flag=0;
 		ADC_read(0);
 		ADC_read(1);
 		ADC_read(2);
@@ -71,6 +73,7 @@ void ADC_update_values()
 	contor++;
 	if(contor==10)
 			{
+				flag=1;
 				contor=0;
 				sum0=0;
 				sum1=0;
@@ -82,22 +85,24 @@ void ADC_update_values()
 
 float get_ADC_average(uint8_t channel)
 {
-	switch(channel)
-	{
-		case 0:  data_sensor = sum0 /10;
-				 distance = (2914. / (data_sensor + 4.98)) -1;	//in cm formula
-				 break;
-		case 1:  data_sensor = sum1 /10;
-				 distance = (2914. / (data_sensor + 4.98)) -1;	//in cm formula
-				 break;
-		case 2:  data_sensor = sum2 /10;
-				 distance = (2914. / (data_sensor + 4.98)) -1;	//in cm formula
-		         break;
-		case 3:  data_sensor = sum3 /10;
-		         distance = (2914. / (data_sensor + 4.98)) -1;	//in cm formula
-		         break;		 
-	}
-	return distance; //ADC average in cm
+
+		switch(channel)
+		{
+			case 0:  data_sensor = sum0 /10;
+					 distance = (2914. / (data_sensor + 4.98)) -1;	//in cm formula
+					 break;
+			case 1:  data_sensor = sum1 /10;
+					 distance = (2914. / (data_sensor + 4.98)) -1;	//in cm formula
+					 break;
+			case 2:  data_sensor = sum2 /10;
+					 distance = (2914. / (data_sensor + 4.98)) -1;	//in cm formula
+					 break;
+			case 3:  data_sensor = sum3 /10;
+				     distance = (2914. / (data_sensor + 4.98)) -1;	//in cm formula
+					 break;		 
+		}
+		flag=0;
+		return distance; //ADC average in cm
 }
 
 

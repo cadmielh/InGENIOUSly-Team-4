@@ -11,7 +11,7 @@
 
 float rezultat;
  char primit;
-float v[40];
+uint16_t v[40];
 
 int main (void)
 { 
@@ -19,6 +19,7 @@ int main (void)
 	uint8_t speed;
 	speed=200;
 
+	flag=0;
 	
 	USART_Init();
 	ADC_init();
@@ -34,8 +35,12 @@ int main (void)
 		//total=0;
 		
 
-		//rezultat=get_ADC_average(0);
-		rezultat = get_ADC_average(0);
+		//for(int i=0;i<40;i++)
+			//v[i]=ADC_read(0);
+			
+		//if(flag==1)
+		get_ADC_average(0);
+		//rezultat = get_ADC_average(0);
 	
 	
 				

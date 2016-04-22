@@ -24,7 +24,7 @@ float get_ADC_average(uint8_t channel);		//function that returns an average in c
 void ADC_update_values();	//a function that updates the sensor values in a timer
 void encoders_init(void);
 
-
+volatile int flag;
 
 
 #endif
