@@ -7,7 +7,7 @@
 
 #include "sensors.h"
 
-uint16_t adc_value;            //Variable used to store the value read from the ADC
+
 volatile uint8_t adc_high, adc_low;
 uint16_t data_sensor;
 uint16_t v[50],chan0[10],chan1[10],chan2[10],chan3[10];
@@ -15,7 +15,7 @@ uint32_t total;
 uint8_t tmp = 0;
 uint8_t contor=0;
 uint8_t val;
-uint32_t sum0=0,sum1=0,sum2=0,sum3=0;
+uint32_t sum0=0,sum1=0,sum2=0,sum3=0,s[4];
 
 float distance;
 
@@ -29,9 +29,12 @@ void ADC_init()
 
 
 
-uint16_t ADC_read(uint8_t channel)
+float ADC_read(uint8_t channel)
 {
 	float distance;
+	float volts;
+	uint16_t adc_value;            //Variable used to store the value read from the ADC
+	
 	channel=channel & 0b00000111;		//Select ADC Channel, channel must be 0-7
 	ADMUX = 0;
 	//ADMUX |= (1<<MUX0);        //Clear the older channel that was read
@@ -41,16 +44,18 @@ uint16_t ADC_read(uint8_t channel)
 	
 	
 	while(ADCSRA & (1<<ADSC));	// wait for conversion to complete
-	//volts=ADC*0.0048828125;
-	//distance = 65 * pow(volts, -1.10);
-	//distance = (2914. / (ADC + 4.98)) -1;
-	return ADC;
+	adc_value=ADC;
+	volts = adc_value+1;
+	distance = 65 * pow(volts, -1.1);
+	//distance = (2914. / (ADC + 5)) -1;
+	return distance;
 }
 
 
 void ADC_update_values()
 {		//taking first value from sensor which is inaccurate
 		flag=0;
+		
 		ADC_read(0);
 		ADC_read(1);
 		ADC_read(2);
@@ -75,10 +80,16 @@ void ADC_update_values()
 			{
 				flag=1;
 				contor=0;
+				
+				s[0]=sum0;
 				sum0=0;
+				s[1]=sum1;
 				sum1=0;
+				s[2]=sum2;
 				sum2=0;
+				s[3]=sum3;
 				sum3=0;
+				
 			}
 }
 
@@ -88,16 +99,20 @@ float get_ADC_average(uint8_t channel)
 
 		switch(channel)
 		{
-			case 0:  data_sensor = sum0 /10;
+			case 0:  data_sensor = s[0] /10;
+					s[0]=0;
 					 distance = (2914. / (data_sensor + 4.98)) -1;	//in cm formula
 					 break;
-			case 1:  data_sensor = sum1 /10;
+			case 1:  data_sensor = s[1] /10;
+					s[1]=0;
 					 distance = (2914. / (data_sensor + 4.98)) -1;	//in cm formula
 					 break;
-			case 2:  data_sensor = sum2 /10;
+			case 2:  data_sensor = s[2] /10;
+					s[2]=0;
 					 distance = (2914. / (data_sensor + 4.98)) -1;	//in cm formula
 					 break;
-			case 3:  data_sensor = sum3 /10;
+			case 3:  data_sensor = s[3] /10;
+					s[3]=0;
 				     distance = (2914. / (data_sensor + 4.98)) -1;	//in cm formula
 					 break;		 
 		}

@@ -72,6 +72,6 @@ ISR(TIMER3_COMPA_vect)
 		ovfl=0;
 	}
 	
-	ADC_update_values();
+	//ADC_update_values();
 	
 }
