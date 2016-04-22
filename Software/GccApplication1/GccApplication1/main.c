@@ -11,7 +11,7 @@
 
 float rezultat;
  char primit;
-
+float v[40];
 
 int main (void)
 { 
@@ -34,8 +34,8 @@ int main (void)
 		//total=0;
 		
 
-		rezultat=get_ADC_average(0);
-		
+		//rezultat=get_ADC_average(0);
+		rezultat = get_ADC_average(0);
 	
 	
 				

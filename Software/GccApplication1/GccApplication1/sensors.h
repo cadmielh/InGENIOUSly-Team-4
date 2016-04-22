@@ -19,7 +19,7 @@ volatile uint8_t grey_left;
 volatile uint8_t rotations_left;
 
 void ADC_init(void);            //Function to initialize/configure the ADC
-float ADC_read(uint8_t channel);    //Function to read an arbitrary analogic channel/pin		
+uint16_t ADC_read(uint8_t channel);    //Function to read an arbitrary analogic channel/pin		
 float get_ADC_average(uint8_t channel);		//function that returns an average in cm
 void ADC_update_values();	//a function that updates the sensor values in a timer
 void encoders_init(void);

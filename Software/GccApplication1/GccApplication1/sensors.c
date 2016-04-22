@@ -28,9 +28,9 @@ void ADC_init()
 
 
 
-float ADC_read(uint8_t channel)
+uint16_t ADC_read(uint8_t channel)
 {
-	
+	float distance;
 	channel=channel & 0b00000111;		//Select ADC Channel, channel must be 0-7
 	ADMUX = 0;
 	//ADMUX |= (1<<MUX0);        //Clear the older channel that was read
