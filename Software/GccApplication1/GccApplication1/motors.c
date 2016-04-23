@@ -24,6 +24,7 @@ uint8_t tm2=1;
 uint8_t moving_forward,moving_backward;
 
 
+
 void PWM1_init()
 {
 	// initialize TCCR0 as per requirement, say as follows
@@ -88,158 +89,138 @@ unsigned int receive_parameters()
 	return OK;
 }
 
+
 /*
-void Motor_1(unsigned char direction_1, unsigned char speed_1,unsigned char time_1)
-{
-	
-	sec1=0;
-	
-	if(start_once1==1)
-	{
-		if(direction_1=='F' || direction_1=='f')
-		{
-			//go forward
-			PORTD|=(1<<PORTD6)|(1<<PORTD7);
-			_delay_ms(1);
-			PORTD|=(1<<PORTD6);
-			PORTD&=~(1<<PORTD7);
-			start_once1=0;
-			sec1=s_time.s;
-			for(uint8_t i=32;i<speed_1;i++)
-			{
-				OCR0A=i;
-				_delay_ms(5);
-			}
-		
-		}
-		if(direction_1=='B' || direction_1=='b')
-		{
-			//go backward
-			PORTD|=(1<<PORTD6)|(1<<PORTD7);
-			_delay_ms(1);
-			PORTD|=(1<<PORTD7);
-			PORTD&=~(1<<PORTD6);
-			start_once1=0;
-			sec1=s_time.s;
-			for(uint8_t i=32;i<speed_1;i++)
-			{
-				OCR0A=i;
-				_delay_ms(5);
-			}
-		}
-	}
-	
-	
-		if ((s_time.s - sec1)>=time_1 && tm1)
-		{
-			for(uint8_t i=speed_1;i>0;i--)
-			{
-				OCR0A=i;	
-				_delay_ms(5);
-			}
-			tm1=0;
-		}	
-	
-}
-
-
-void Motor_2(unsigned char direction_2, unsigned char speed_2,unsigned char time_2)
-{
-	sec2=0;
-	if(start_once2==1)
-	{
-		
-		if(direction_2=='F' || direction_2=='f')
-		{
-			//go forward
-			PORTD|=(1<<PORTD4)|(1<<PORTD5);
-			_delay_ms(1);
-			PORTD|=(1<<PORTD4);
-			PORTD&=~(1<<PORTD5);
-			start_once2=0;
-			sec2=s_time.s;
-			for(uint8_t i=32;i<speed_2;i++)
-			{
-				OCR0B=i;
-				_delay_ms(5);
-			}
-			//timer(time_1)
-			
-		}
-		if(direction_2=='B' || direction_2=='b')
-		{
-			//go backward
-			PORTD|=(1<<PORTD4)|(1<<PORTD5);
-			_delay_ms(1);
-			PORTD|=(1<<PORTD5);
-			PORTD&=~(1<<PORTD4);
-			start_once2=0;
-			sec2=s_time.s;
-			for(uint8_t i=32;i<speed_2;i++)
-			{
-				OCR0B=i;
-				_delay_ms(5);
-			}
-		}
-		
-	}
-	
-	
-	if ((s_time.s - sec2)>=time_2 && tm2)
-	{
-		for(uint8_t i=speed_2;i>0;i--)
-		{
-			OCR0B=i;
-			_delay_ms(5);
-		}
-		tm2=0;
-	}
-	
-	
-	
-}
-*/
 void motors_forward(uint8_t speed)
 {
 	PORTD&=~(1<<PORTD5);	//both motors phase are set to 0
 	PORTD&=~(1<<PORTD6);
 	
-	if(moving_forward==0)
-		for(uint8_t i=32;i<speed;i++)
+	//if(moving_forward==0)
+		for(uint8_t i=32;i<=speed;i++)
 		{
-			moving_forward=1;
+		//	moving_forward=1;
 			OCR0A=i;
 			OCR0B=i;
-			_delay_ms(5);
+			_delay_ms(3);
 		}
-		else if(moving_forward==1)
-		{
+		//else if(moving_forward==1)
+		//{
 			//here comes reglation
-			OCR0A=speed;
-			OCR0B=speed;
-		}
+			_delay_ms(4000);
+			OCR0A=0;
+			OCR0B=0;
+		//}
 }
 
 
 void motors_backward(uint8_t speed)
 {
 	PORTD|=(1<<PORTD5);	//both motors phase are set to 1
-	PORTD|=(1<<PORTD6);
+	PORTD&=~(1<<PORTD6);
 	
-	if(moving_backward==0)
-	for(uint8_t i=32;i<speed;i++)
-	{
-		moving_backward=1;
-		OCR0A=i;
-		OCR0B=i;
-		_delay_ms(5);
-	}
-	else if(moving_backward==1)
-	{
-		//here comes reglation
+	//if(moving_backward==0)
+	//for(uint8_t i=32;i<=speed;i++)
+	//{
+		//moving_backward=1;
 		OCR0A=speed;
 		OCR0B=speed;
+		//_delay_ms(3);
+	//}
+	//else if(moving_backward==1)
+	//{
+		//here comes reglation
+		_delay_ms(5000);
+		OCR0A=0;
+		OCR0B=0;
+	//}
+}
+*/
+
+void motors_right(uint8_t speed_right, char direction_right)
+{
+	if(direction_right == 'f')	//forward 
+	{
+		PORTD&=~(1<<PORTD5);
+		OCR0A=speed_right;
 	}
+	if(direction_right == 'b')
+	{
+		PORTD|=(1<<PORTD5);
+		OCR0A=speed_right;
+	}
+}
+
+
+void motors_left(uint8_t speed_left,char direction_left)
+{
+	if(direction_left == 'f')	//forward
+	{
+		PORTD&=~(1<<PORTD6);
+		OCR0B=speed_left;
+	}
+	if(direction_left == 'b')
+	{
+		PORTD|=(1<<PORTD6);
+		OCR0B=speed_left;
+	}
+}
+
+
+void reglation_by_left(uint8_t pwm_left, uint8_t pwm_right)
+{
+	float data_sensor,error;
+	data_sensor=ADC_read(0);		//left sensor's channel
+									//in loc de ADC_read, valoarea filtrata
+	error=11.9 - data_sensor;
+	
+	if(error<=0.1 && error>=-0.2)
+		{
+			OCR0B=pwm_left;
+			OCR0A=pwm_right;
+		}
+	if(error> 0.1 && error<=1)
+		{
+			OCR0B=pwm_left+5;
+			OCR0B=pwm_right;
+		}
+	if (error>1 && error <=2)
+	{	
+		OCR0B=pwm_left+10;
+		OCR0A=pwm_right;
+	}
+	if(error>2 && error <=3)
+	{
+		OCR0B=pwm_left+20;
+		OCR0A=pwm_right;
+	}
+	if(error > 3)
+	{
+		OCR0B=pwm_left+40;
+		OCR0A=pwm_right;
+	}
+	if(error < -0.2 &&  error >= -1)
+	{
+		OCR0A=pwm_right+5;
+		OCR0B=pwm_left;
+	}
+	if(error <-1 && error >=-2)
+	{
+		OCR0A=pwm_right+10;
+		OCR0B=pwm_left;
+	}
+	if(error <-2 && error>=-3)
+	{
+		OCR0A=pwm_right+20;
+		OCR0B=pwm_left;
+	}
+	if(error < -3)
+	{
+		OCR0A=pwm_right+40;
+		OCR0B=pwm_left;
+	}
+		
+
 }
 
 
@@ -249,3 +230,15 @@ void stop_motors()
 	OCR0B=0;
 	moving_forward=0;
 }
+
+/*
+
+if ((s_time.s - sec1)>=time_1 && tm1)
+{
+	for(uint8_t i=speed_1;i>0;i--)
+	{
+		OCR0A=i;
+		_delay_ms(5);
+	}
+	tm1=0;
+}*/

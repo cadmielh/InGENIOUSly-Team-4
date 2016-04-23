@@ -17,7 +17,9 @@ uint8_t contor=0;
 uint8_t val;
 uint32_t sum0=0,sum1=0,sum2=0,sum3=0,s[4];
 
-float distance;
+double distance;
+double volts;
+
 
 
 
@@ -31,8 +33,7 @@ void ADC_init()
 
 float ADC_read(uint8_t channel)
 {
-	float distance;
-	float volts;
+	
 	uint16_t adc_value;            //Variable used to store the value read from the ADC
 	
 	channel=channel & 0b00000111;		//Select ADC Channel, channel must be 0-7
@@ -45,9 +46,9 @@ float ADC_read(uint8_t channel)
 	
 	while(ADCSRA & (1<<ADSC));	// wait for conversion to complete
 	adc_value=ADC;
-	volts = adc_value+1;
-	distance = 65 * pow(volts, -1.1);
-	//distance = (2914. / (ADC + 5)) -1;
+	//volts = adc_value * ( (double)5 / 1024);
+	//distance = 65 * pow(volts, -1.1);
+	distance = (2914. / (ADC + 5)) -1;
 	return distance;
 }
 
