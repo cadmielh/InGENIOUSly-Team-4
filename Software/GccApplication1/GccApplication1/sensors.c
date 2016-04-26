@@ -46,8 +46,6 @@ float ADC_read(uint8_t channel)
 	
 	while(ADCSRA & (1<<ADSC));	// wait for conversion to complete
 	adc_value=ADC;
-	//volts = adc_value * ( (double)5 / 1024);
-	//distance = 65 * pow(volts, -1.1);
 	distance = (2914. / (ADC + 5)) -1;
 	return distance;
 }

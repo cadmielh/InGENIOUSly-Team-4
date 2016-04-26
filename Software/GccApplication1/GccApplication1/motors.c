@@ -29,7 +29,7 @@ void PWM1_init()
 {
 	// initialize TCCR0 as per requirement, say as follows
 	TCCR0A |= (1<<COM0A1)|(1<<WGM00);
-	TCCR0B = (1<<CS01);
+	TCCR0B = (1<<CS02); //prescaler of 254
 	
 	//PWM PIN
 	DDRB|= (1<<PORTB3);
@@ -40,7 +40,7 @@ void PWM2_init()
 {
 	// initialize TCCR1 as per requirement, say as follows
 	TCCR0A |= (1<<COM0B1)|(1<<WGM02);
-	TCCR0B = (1<<CS01);
+	TCCR0B = (1<<CS02); //prescaler of 254
 	
 	//PWM PIN
 	DDRB|= (1<<PORTB4);
@@ -90,52 +90,59 @@ unsigned int receive_parameters()
 }
 
 
-/*
-void motors_forward(uint8_t speed)
+void Motor_1(unsigned char direction_1, unsigned char speed_1)
 {
-	PORTD&=~(1<<PORTD5);	//both motors phase are set to 0
-	PORTD&=~(1<<PORTD6);
 	
-	//if(moving_forward==0)
-		for(uint8_t i=32;i<=speed;i++)
+		if(direction_1=='F' || direction_1=='f')
 		{
-		//	moving_forward=1;
-			OCR0A=i;
-			OCR0B=i;
-			_delay_ms(3);
+				//go forward
+				PORTD|=(1<<PORTD5)|(1<<PORTD6);
+				_delay_ms(1);
+				PORTD|=(1<<PORTD5);
+				PORTD&=~(1<<PORTD6);
+				OCR0A=speed_1;
+				//timer(time_1)
+		
 		}
-		//else if(moving_forward==1)
-		//{
-			//here comes reglation
-			_delay_ms(4000);
-			OCR0A=0;
-			OCR0B=0;
-		//}
-}
-
-
-void motors_backward(uint8_t speed)
-{
-	PORTD|=(1<<PORTD5);	//both motors phase are set to 1
-	PORTD&=~(1<<PORTD6);
+		if(direction_1=='B' || direction_1=='b')
+		{
+				//go backward
+				PORTD|=(1<<PORTD5)|(1<<PORTD6);
+				_delay_ms(1);
+				PORTD|=(1<<PORTD6);
+				PORTD&=~(1<<PORTD5);
+					OCR0A=speed_1;
+	}
 	
-	//if(moving_backward==0)
-	//for(uint8_t i=32;i<=speed;i++)
-	//{
-		//moving_backward=1;
-		OCR0A=speed;
-		OCR0B=speed;
-		//_delay_ms(3);
-	//}
-	//else if(moving_backward==1)
-	//{
-		//here comes reglation
-		_delay_ms(5000);
-		OCR0A=0;
-		OCR0B=0;
-	//}
 }
-*/
+
+void Motor_2(unsigned char direction_2, unsigned char speed_2)
+{
+	
+	if(direction_2=='F' || direction_2=='f')
+	{
+		//go forward
+		PORTD|=(1<<PORTD3)|(1<<PORTD4);
+		_delay_ms(1);
+		PORTD|=(1<<PORTD3);
+		PORTD&=~(1<<PORTD4);
+		OCR0B=speed_2;
+		//timer(time_1)
+		
+	}
+	if(direction_2=='B' || direction_2=='b')
+	{
+		//go backward
+		PORTD|=(1<<PORTD3)|(1<<PORTD4);
+		_delay_ms(1);
+		PORTD|=(1<<PORTD4);
+		PORTD&=~(1<<PORTD3);
+		OCR0B=speed_2;
+		
+	}
+	
+}
+
 
 void motors_right(uint8_t speed_right, char direction_right)
 {
@@ -222,7 +229,6 @@ void reglation_by_left(uint8_t pwm_left, uint8_t pwm_right)
 		
 
 }
-
 
 void stop_motors()
 {

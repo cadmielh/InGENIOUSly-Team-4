@@ -23,6 +23,9 @@ void PWM1_init();
 void PWM2_init();
 void motors_left(uint8_t speed_left,char direction_left);
 void motors_right(uint8_t speed_right, char direction_right);
+
+void Motor_1(unsigned char direction_1, unsigned char speed_1);
+void Motor_2(unsigned char direction_2, unsigned char speed_2);
 void reglation_by_left(uint8_t pwm_left, uint8_t pwm_right);
 unsigned int receive_parameters();
 void timer3_init();

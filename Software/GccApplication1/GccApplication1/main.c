@@ -30,10 +30,10 @@ int main (void)
 	encoders_init();
 	sei(); //enable interrupts
 	
-	
+	OCR0A=0;
 	while (1)  // main loop										
 	{
-		//total=0;
+	
 		
 		
 		ADC_read(0);
@@ -42,35 +42,16 @@ int main (void)
 			media=media+v[i];
 		}
 		media=media/40;
-		reglation_by_left(PWM,PWM);
-		
-		
-		
-			
-			
-		//if(flag==1)
-			//rezultat = get_ADC_average(0);
-		
-		/*if(flag==0)
-		{	motors_backward(170);
-			flag=1;
-		}
-	*/
-		
-		//_delay_ms(1000);
-		//motors_right(0,'f');
-		//motors_left(0,'f');
-		//PORTD|=(1<<PORTD5);
-		
-		/*for(int i=0;i<=200;i++)
-		{
-			OCR0A=i;
-			OCR0B=i;
-			_delay_ms(10);
-		}*/
-		
-		
-		
+		if(media<3)
+			OCR0B=0;
+		if(media>=3 && media<=5)
+			OCR0B=250;
+		if(media>5 && media<=10)
+			OCR0B=200;
+		if(media>10 && media<=15)
+			OCR0B=150;
+		if(media > 15)
+			OCR0B=100;
 		
 		
 
